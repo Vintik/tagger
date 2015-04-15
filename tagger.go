@@ -69,7 +69,8 @@ SCAN:
 				return
 			}
 
-			_, err = w.Write(z.Raw())
+			raw := string(z.Raw())
+			_, err = w.Write([]byte(html.EscapeString(raw)))
 			if err != nil {
 				return
 			}
@@ -84,7 +85,8 @@ SCAN:
 			}
 
 		default:
-			_, err = w.Write(z.Raw())
+			raw := string(z.Raw())
+			_, err = w.Write([]byte(html.EscapeString(raw)))
 			if err != nil {
 				return
 			}

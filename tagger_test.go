@@ -40,16 +40,15 @@ func TestTaggerTest(t *testing.T) {
 		t: t,
 		data: []struct{ in, out string }{
 			{
-				in: `<html>Hello</html>`,
-				out: `<html><body><span class="html"><html></span>Hello<span class="html">
-					</html></span><script>window.counts={"html":1};</script></body></html>`,
+				in:  `<html>Hello</html>`,
+				out: `<html><body><spanclass="html">&lt;html&gt;</span>Hello<spanclass="html">&lt;/html&gt;</span><script>window.counts={"html":1};</script></body></html>`,
 			},
 			{
 				in: ` <html> <head> <title>Test page</title> </head> <body> <article id="content">
 					<section class="section-1"> <section class="nested-section"> <section> <section>
 					<hr /> <div class="div-1"> <div class="nested-div"> <div> <div> </article>
 					</body> </html> `,
-				out: `<html><body><spanclass="html"><html></span><spanclass="head"><head></span><spanclass="title"><title></span>Testpage<spanclass="title"></title></span><spanclass="head"></head></span><spanclass="body"><body></span><spanclass="article"><articleid="content"></span><spanclass="section"><sectionclass="section-1"></span><spanclass="section"><sectionclass="nested-section"></span><spanclass="section"><section></span><spanclass="section"><section></span><hr/><spanclass="div"><divclass="div-1"></span><spanclass="div"><divclass="nested-div"></span><spanclass="div"><div></span><spanclass="div"><div></span><spanclass="article"></article></span><spanclass="body"></body></span><spanclass="html"></html></span><script>window.counts={"article":1,"body":1,"div":4,"head":1,"html":2,"section":4,"title":1};</script></body></html>`,
+				out: `<html><body><spanclass="html">&lt;html&gt;</span><spanclass="head">&lt;head&gt;</span><spanclass="title">&lt;title&gt;</span>Testpage<spanclass="title">&lt;/title&gt;</span><spanclass="head">&lt;/head&gt;</span><spanclass="body">&lt;body&gt;</span><spanclass="article">&lt;articleid=&#34;content&#34;&gt;</span><spanclass="section">&lt;sectionclass=&#34;section-1&#34;&gt;</span><spanclass="section">&lt;sectionclass=&#34;nested-section&#34;&gt;</span><spanclass="section">&lt;section&gt;</span><spanclass="section">&lt;section&gt;</span>&lt;hr/&gt;<spanclass="div">&lt;divclass=&#34;div-1&#34;&gt;</span><spanclass="div">&lt;divclass=&#34;nested-div&#34;&gt;</span><spanclass="div">&lt;div&gt;</span><spanclass="div">&lt;div&gt;</span><spanclass="article">&lt;/article&gt;</span><spanclass="body">&lt;/body&gt;</span><spanclass="html">&lt;/html&gt;</span><script>window.counts={"article":1,"body":1,"div":4,"head":1,"html":2,"section":4,"title":1};</script></body></html>`,
 			},
 		},
 	}
