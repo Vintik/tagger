@@ -1,4 +1,4 @@
-package main
+package tagger
 
 import (
 	"encoding/json"
@@ -8,13 +8,14 @@ import (
 	"io"
 	"log"
 	"net/http"
-	// "time"
-	// "net/http/httputil"
 )
 
-var counts = make(map[string]int)
+type Server struct {
+	URL    string
+	counts map[string]int
+}
 
-func doit(w http.ResponseWriter, r *http.Request) {
+func (s *Server) doit(w http.ResponseWriter, r *http.Request) {
 	err := error(nil)
 
 	defer func() {
@@ -79,7 +80,7 @@ SCAN:
 			}
 
 			if tt == html.StartTagToken {
-				counts[name] = counts[name] + 1
+				s.counts[name] = s.counts[name] + 1
 			}
 
 		default:
@@ -91,63 +92,23 @@ SCAN:
 	}
 
 	// Write the page footer
-	w.Write([]byte(fmt.Sprintf("<script>window.counts =")))
-	err = json.NewEncoder(w).Encode(counts)
+	w.Write([]byte(fmt.Sprintf("<script>window.counts=")))
+	err = json.NewEncoder(w).Encode(s.counts)
 	if err != nil {
 		return
 	}
-	w.Write([]byte(fmt.Sprintf("; </script>")))
+	w.Write([]byte(fmt.Sprintf(";</script>")))
 	w.Write([]byte(fmt.Sprintf("</body></html>")))
 }
 
-func test(w http.ResponseWriter, r *http.Request) {
-	s := `
-<html>
-	<head>
-		<title>Test page</title>
-	</head>
-	<body>
-		<article id="content">
-			<section class="section-1">
-				<section class="nested-section">
-				<section>
-			<section>
-			<hr />
-			<div class="div-1">
-				<div class="nested-div">
-				<div>
-			<div>
-		</article>
-	</body>
-</html>
-`
-	w.Write([]byte(s))
-}
+func (s *Server) Run() {
+	s.counts = make(map[string]int)
 
-func main() {
-	http.HandleFunc("/doit", doit)
-	http.HandleFunc("/test", test)
-	//TODO a flag for port
-	// go func() {
-	err := http.ListenAndServe(":8580", nil)
+	http.HandleFunc("/doit", s.doit)
+
+	log.Printf("Starting server on %q", s.URL)
+	err := http.ListenAndServe(s.URL, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	// }()
-
-	/*
-		// time.Sleep(1 * time.Second)
-		cl := http.Client{}
-		res, err := cl.Get("http://localhost:8580/test")
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer res.Body.Close()
-
-		bb, err := httputil.DumpResponse(res, true)
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.Printf("%s", bb)
-	*/
 }
