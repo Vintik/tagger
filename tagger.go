@@ -44,7 +44,7 @@ func (s *Server) doit(w http.ResponseWriter, r *http.Request) {
 	defer resp.Body.Close()
 
 	// Write the page header
-	w.Write([]byte(fmt.Sprintf("<html><body>")))
+	w.Write([]byte(fmt.Sprintf(`<html><head><link rel="stylesheet" type="text/css" href="/static/source.css" media="screen" /></head><body>`)))
 
 	// Parse the source HTML, output the decorated
 	z := html.NewTokenizer(resp.Body)
@@ -117,8 +117,9 @@ func (s *Server) Run() {
 
 	http.HandleFunc("/doit", s.doit)
 	http.HandleFunc("/healthcheck", s.healthcheck)
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("../static"))))
+	//	http.Handle("/static/", http.FileServer(http.Dir("../static")))
 	http.HandleFunc("/", s.handleRoot)
-	http.Handle("/static/", http.FileServer(http.Dir("../static")))
 
 	log.Printf("Starting server on %q", s.URL)
 	err := http.ListenAndServe(s.URL, nil)
