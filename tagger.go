@@ -103,10 +103,22 @@ SCAN:
 	w.Write([]byte(fmt.Sprintf("</body></html>")))
 }
 
+func (s *Server) healthcheck(w http.ResponseWriter, r *http.Request) {
+	log.Println("Healthcheck: server healthy")
+	w.Write([]byte(fmt.Sprintf("Alive and healthy")))
+}
+
+func (s *Server) handleRoot(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "../static/tagger.html")
+}
+
 func (s *Server) Run() {
 	s.counts = make(map[string]int)
 
 	http.HandleFunc("/doit", s.doit)
+	http.HandleFunc("/healthcheck", s.healthcheck)
+	http.HandleFunc("/", s.handleRoot)
+	http.Handle("/static/", http.FileServer(http.Dir("../static")))
 
 	log.Printf("Starting server on %q", s.URL)
 	err := http.ListenAndServe(s.URL, nil)
