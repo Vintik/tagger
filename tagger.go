@@ -11,11 +11,12 @@ import (
 )
 
 type Server struct {
-	URL    string
-	counts map[string]int
+	URL string
 }
 
 func (s *Server) doit(w http.ResponseWriter, r *http.Request) {
+	counts := make(map[string]int)
+
 	err := error(nil)
 
 	defer func() {
@@ -81,7 +82,7 @@ SCAN:
 			}
 
 			if tt == html.StartTagToken {
-				s.counts[name] = s.counts[name] + 1
+				counts[name] = counts[name] + 1
 			}
 
 		default:
@@ -95,7 +96,7 @@ SCAN:
 
 	// Write the page footer
 	w.Write([]byte(fmt.Sprintf("<script>window.counts=")))
-	err = json.NewEncoder(w).Encode(s.counts)
+	err = json.NewEncoder(w).Encode(counts)
 	if err != nil {
 		return
 	}
@@ -113,8 +114,6 @@ func (s *Server) handleRoot(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) Run() {
-	s.counts = make(map[string]int)
-
 	http.HandleFunc("/doit", s.doit)
 	http.HandleFunc("/healthcheck", s.healthcheck)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("../static"))))
