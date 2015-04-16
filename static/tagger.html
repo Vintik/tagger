@@ -2,12 +2,19 @@
 <html>
 	<head>
 		<title>Tagger App</title>
+		<link rel="stylesheet" type="text/css" href="/static/normalize.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="/static/tagger.css" media="screen" />
 	</head>
 	<body>
-		<form method="POST" action="/doit">
-			<input type="text" name="url" placeholder="http://www.slack.com" />
-			<input type="submit" value="Load" />
-		</form>
-		<script type="text/javascript" src="/tagger.js"></script>
+		<header>
+			<form method="POST" action="/doit" target="source-code">
+				<input class="url-input" type="text" name="url" placeholder="Enter a url here" />
+				<input type="submit" value="Load" />
+			</form>
+		</header>
+		<section class="source-row">
+			<iframe name="source-code" id="source-code" src=""></iframe>
+		</section>
+		<script src="/static/tagger.js"></script>
 	</body>
 </html>

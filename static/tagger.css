@@ -1,0 +1,32 @@
+* {
+	box-sizing: border-box;
+}
+
+header {
+	width: 100%;
+	height: 30px;
+	padding: 5px 30px;
+	background-color: purple;
+}
+
+header form {
+	width: 100%;
+}
+
+header form .url-input {
+	border: 1px solid gray;
+	border-radius: 3px;
+}
+
+.source-row {
+	width: 100%;
+	padding: 30px;
+}
+
+iframe {
+	width: 80%;
+	display: block;
+	outline: none;
+	border: 1px solid lightgray;
+	margin: 0 auto;
+}
