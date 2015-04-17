@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/url"
 )
 
 type Server struct {
@@ -38,7 +39,16 @@ func (s *Server) doit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp, err := http.Get(u)
+	url, err := url.Parse(u)
+	if err != nil {
+		return
+	}
+
+	if url.Scheme == "" {
+		url.Scheme = "http"
+	}
+
+	resp, err := http.Get(url.String())
 	if err != nil {
 		return
 	}
