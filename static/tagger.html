@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Tagger App</title>
-		<link rel="stylesheet" type="text/css" href="/static/normalize.css" media="screen" />
-		<link rel="stylesheet" type="text/css" href="/static/tagger.css" media="screen" />
+		<title>Tagger</title>
+		<link rel="stylesheet" type="text/css" href="/static/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="/static/tagger.css" />
+		<link rel="stylesheet" type="text/css" href="/static/skeleton.css" />
 	</head>
-	<body>
+	<body class="container">
 		<header>
 			<form method="POST" action="/doit" target="source-code">
 				<label for="url">Find the HTML source of a webpage:</label>
@@ -13,12 +14,10 @@
 				<input type="submit" value="Load" />
 			</form>
 		</header>
-		<table>
-			<tbody class="counts">
-			</tbody>
-		</table>
-		<section class="source-row">
-			<iframe name="source-code" id="source-code" src=""></iframe>
+		<ul class="counts row">
+		</ul>
+		<section class="row">
+			<iframe name="source-code" id="source-code" src="" class="twelve columns"></iframe>
 		</section>
 		<script src="/static/tagger.js"></script>
 	</body>

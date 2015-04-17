@@ -13,9 +13,9 @@ document.body.onload = function () {
 		for (tagName in counts) {
 			(function () {
 				var count = counts[tagName],
-				    tr = createRow(tagName, count);
+				    li = createListItem(tagName, count);
 				
-				countsEl.appendChild(tr);
+				countsEl.appendChild(li);
 			})();
 		}
 	};
@@ -54,10 +54,6 @@ function createTagNameCell(tagName) {
 
 	anchor.innerText = tagName;
 	anchor.href = "#";
-	anchor.onclick = function (e) {
-		e.preventDefault();
-		highlight(tagName);
-	};
 
 	td.appendChild(anchor);
 
@@ -71,13 +67,29 @@ function createTagCountCell(count) {
 	return td;
 }
 
-function createRow(tagName, count) {
-	var tr = document.createElement('tr'),
-	    tagNameEl = createTagNameCell(tagName),
-	    countEl = createTagCountCell(count);
+function createListItem(tagName, count) {
+	var li = document.createElement('li'),
+	    btnEl = document.createElement('a'),
+	    tagNameEl = document.createElement('span'),
+	    countEl = document.createElement('span');
 
-	tr.appendChild(tagNameEl);
-	tr.appendChild(countEl);
+	btnEl.className = "button";
+	btnEl.href = '#'
 
-	return tr;
+	btnEl.onclick = function (e) {
+		e.preventDefault();
+		highlight(tagName);
+	};
+
+	tagNameEl.innerText = tagName;
+	tagNameEl.className = 'list-tagname'
+
+	countEl.innerText = count;
+	countEl.className = 'list-tagcount'
+
+	btnEl.appendChild(countEl);
+	btnEl.appendChild(tagNameEl);
+
+	li.appendChild(btnEl);
+	return li;
 }

@@ -10,29 +10,40 @@ header {
 header form {
 	width: 100%;
 	text-align: center;
+	margin-bottom: 0;
 }
 
 header form .url-input {
 	width: 50%;
-	height: 30px;
-	padding: 0 10px;
-	border: 1px solid lightgray;
-	border-radius: 5px;
 }
 
 header form label {
 	display: block;
 }
 
-.source-row {
-	width: 100%;
-	padding: 30px;
-}
-
 iframe {
-	width: 80%;
 	display: block;
 	outline: none;
 	border: 1px solid lightgray;
-	margin: 0 auto;
+}
+
+ul.counts {
+	list-style-type: none;
+}
+
+ul.counts li {
+	display: inline-block;
+	padding-right: 5px;
+}
+
+ul.counts a {
+	padding: 0 10px;
+}
+
+ul.counts .list-tagcount {
+	padding-right: 5px;
+	border-right: 1px solid black;
+}
+ul.counts .list-tagname {
+	padding-left: 5px;
 }
