@@ -45,9 +45,16 @@ func (s *Server) doit(w http.ResponseWriter, r *http.Request) {
 	defer resp.Body.Close()
 
 	// Write the page header
-	w.Write([]byte(fmt.Sprintf(`<html><head><link rel="stylesheet" type="text/css" href="/static/source.css" media="screen" /></head><body>`)))
+	// This HTML cannot go into a template since the data is never loaded into memory
+	w.Write([]byte(fmt.Sprintf(`
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="/static/source.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="/static/normalize.css" media="screen" />
+	</head>
+	<body><pre>`)))
 
-	// Parse the source HTML, output the decorated
+	// Parse the source HTML, output the wrapped HTML
 	z := html.NewTokenizer(resp.Body)
 
 SCAN:
@@ -95,7 +102,7 @@ SCAN:
 	}
 
 	// Write the page footer
-	w.Write([]byte(fmt.Sprintf("<script>window.counts=")))
+	w.Write([]byte(fmt.Sprintf("</pre><script>window.counts=")))
 	err = json.NewEncoder(w).Encode(counts)
 	if err != nil {
 		return

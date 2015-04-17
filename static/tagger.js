@@ -4,9 +4,10 @@ document.body.onload = function () {
 	iframeEl.onload = function () {
 		var counts = iframeEl.contentWindow.counts || {};
 		var countsEl = document.getElementsByClassName('counts')[0];
-		console.log(counts);
 
-		sourceHeight = iframeEl.contentWindow.document.body.offsetHeight + "px";
+		countsEl.innerHTML = '';
+
+		sourceHeight = iframeEl.contentWindow.document.body.scrollHeight + "px";
 		iframeEl.style.height = sourceHeight;
 
 		for (tagName in counts) {
@@ -17,8 +18,11 @@ document.body.onload = function () {
 				countsEl.appendChild(tr);
 			})();
 		}
-		
-		
+	};
+
+	document.onresize = function (e) {
+		sourceHeight = iframeEl.contentWindow.document.body.scrollHeight + "px";
+		iframeEl.style.height = sourceHeight;
 	};
 	
 };
@@ -30,8 +34,11 @@ function highlight(tagName) {
 	    el;
 
 	// Clear the previously highlighted tagNames
+	//
+	// A for loop was avoided here due to the `prevEls` actually being an HTMLCollection
+	// HTMLCollection will automatically remove items if they no longer fit the className selected by
 	while (prevEls.length) {
-		el = prevEls[i];
+		el = prevEls[prevEls.length - 1];
 		el.className = el.className.replace('highlight', '');
 	}
 
