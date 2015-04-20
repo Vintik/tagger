@@ -26,6 +26,7 @@ The frontend will POST the search requests to an iframe and load the response in
 
 - Found out how to stream data into a go template. Would be a much cleaner implementation to use a go template than to post to an iframe. This will resolve the bookmarking/routing of the frontend
 - Rename /doit endpoint to something more descriptive
+- Create shell script for easy server start up and restarting
 - Decide whether frontend should move to jquery to simplify the code (quite a lot of document.createElement)
 - Clean up some styling and alignments
 - Fix relative pathing issue to serve static assets. Currently the path is relative to server.go, and the app won't work if started in a different directory of the project.
